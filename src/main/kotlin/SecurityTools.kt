@@ -3,6 +3,7 @@ package com.rsk
 import ConsoleOutputStrategy
 import Hash
 import Providers
+import Sign
 import com.rsk.security.*
 
 
@@ -16,7 +17,6 @@ fun main(args: Array<String>) {
 
 //        println("hashing: java SecurityToolsKt [-op 'hash'] [-f filename]  [-d destfilename] [-p provider] [-a algorithm] [-o] [-encode]")
 //        println("signing: java SecurityToolsKt  [-op 'sign'] -s [-f filename] [-d signaturefile] [-p provider] [-a algorithm]")
-//        println("providers: java SecurityToolsKt  [-op 'providers']  [-f filename]  [-d destfilename] [-p provider] [-a algorithm] [-o] [-encode]")
     }
 
     if (ishelp.startsWith("--help:")) {
@@ -25,6 +25,7 @@ fun main(args: Array<String>) {
             // help on each part
             "providers" -> Providers.Help().help()
             "hash" -> Hash.Help().help()
+            "sign" -> Sign.Help().help()
         }
         return
     }
@@ -62,6 +63,7 @@ fun main(args: Array<String>) {
         }
 
         "sign" -> {
+            Sign(ConsoleOutputStrategy()).run()
         }
 
         "providers" -> {

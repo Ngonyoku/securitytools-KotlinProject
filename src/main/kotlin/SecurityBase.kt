@@ -8,32 +8,36 @@ abstract class SecurityBase(protected val outputStrategy: OutputStrategy) {
     private val overwrite: Boolean by Argument.argument()
     private val encode: Boolean by Argument.argument()
 
+    protected val algorithm: String by Argument.argument()
+    protected val fileName: String by Argument.argument()
+    protected val destFileName: String by Argument.argument()
+    protected val provider: String  by Argument.argument()
+
+
     @Throws(IOException::class)
     fun createOutputStream(fileName: String): OutputStream {
-        return if (fileName.isEmpty()) {
+        return if (fileName.isEmpty())
             System.out
-        } else {
+        else {
             val file = File(fileName)
 
-            val fileOutputStrem = if (file.exists()) {
-                if (overwrite) {
+            val fileOutputStream = if (file.exists()) {
+                if (overwrite)
                     FileOutputStream(file)
-                } else {
-                    throw IOException("Destination File Already Exists")
-                }
+                else
+                    throw IOException("Destination file already exists")
             } else {
                 FileOutputStream(file)
             }
-
-            fileOutputStrem
+            fileOutputStream
         }
     }
 
     @Throws(FileNotFoundException::class)
     fun createInputStream(fileName: String): InputStream {
-        return if (fileName.isEmpty()) {
+        return if (fileName.isEmpty())
             System.`in`
-        } else {
+        else {
             val f = File(fileName)
             if (f.exists()) {
                 FileInputStream(f)
@@ -55,4 +59,10 @@ abstract class SecurityBase(protected val outputStrategy: OutputStrategy) {
         }
         os.flush()
     }
+
+    @Throws(IOException::class)
+    fun readBytes(inStream: InputStream): ByteArray {
+        return inStream.readBytes()
+    }
+
 }
