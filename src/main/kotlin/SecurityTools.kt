@@ -1,6 +1,7 @@
 package com.rsk
 
 import ConsoleOutputStrategy
+import Hash
 import Providers
 import com.rsk.security.*
 
@@ -23,6 +24,7 @@ fun main(args: Array<String>) {
         when (helpon) {
             // help on each part
             "providers" -> Providers.Help().help()
+            "hash" -> Hash.Help().help()
         }
         return
     }
@@ -56,6 +58,7 @@ fun main(args: Array<String>) {
     // execute the code
     when (type.value.toLowerCase()) {
         "hash" -> {
+            Hash(ConsoleOutputStrategy()).run()
         }
 
         "sign" -> {

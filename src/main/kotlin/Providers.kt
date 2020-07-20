@@ -5,7 +5,7 @@ import java.security.Security
 
 class ProviderDetails(val providerName: String, val name: String)
 
-class Providers(private val outputStrategy: OutputStrategy) {
+class Providers(outputStrategy: OutputStrategy) : SecurityBase(outputStrategy) {
 
     private val filter: String by argument()
 
@@ -15,7 +15,7 @@ class Providers(private val outputStrategy: OutputStrategy) {
         }
     }
 
-    fun run() {
+    override fun run() {
         listAllProviders()
     }
 
