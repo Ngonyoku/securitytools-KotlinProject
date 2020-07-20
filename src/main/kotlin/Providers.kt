@@ -5,9 +5,15 @@ import java.security.Security
 
 class ProviderDetails(val providerName: String, val name: String)
 
-class Providers {
+class Providers(private val outputStrategy: OutputStrategy) {
 
     private val filter: String by argument()
+
+    class Help {
+        fun help() {
+            println("Providers: java SecurityToolsKt [-op 'providers'] [-d destfilename] [-p provider] [-a algorithm] [-o] [-encode]")
+        }
+    }
 
     fun run() {
         listAllProviders()
@@ -20,21 +26,26 @@ class Providers {
             }
         } else {
             getFilteredProviders().forEach {
-                println(println("${it.providerName} : ${it.name}"))
+                println(display("${it.providerName} : ${it.name}"))
             }
         }
 
     }
 
     private fun display(provider: Provider) {
-        println(provider.name)
-        println("-----------------------------------------------------------------------------------------------------")
+        outputStrategy.write(provider.name)
+        outputStrategy.writeHeader()
 
         provider.entries.forEach { entry ->
-            println("\t ${entry.key}, ${entry.value}") /*Print out the type of Algorithm provided to us*/
+            /*Print out the type of Algorithm provided to us*/
+            outputStrategy.write("\t ${entry.key}, ${entry.value}")
         }
 
-        println("-----------------------------------------------------------------------------------------------------")
+        outputStrategy.writeFooter()
+    }
+
+    private fun display(message: String) {
+        outputStrategy.write(message)
     }
 
     private fun getProviders(): List<Provider> {
